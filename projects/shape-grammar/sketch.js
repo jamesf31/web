@@ -8,9 +8,9 @@ let rules = [];
 
 let gui;
 let params = {
-  autoRun: false,
+  autoRun: true,
   runSpeed: 5,
-  autoMutate: false,
+  autoMutate: true,
   mutationRate: 1,
   step_1: () => applyRule(rules[0]),
   step_2: () => applyRule(rules[1]),
