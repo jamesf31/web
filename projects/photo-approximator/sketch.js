@@ -1,7 +1,16 @@
 let img;
 let holder;
 let canvas;
-let marksPerFrame = 50;
+
+let gui;
+let params = {
+  autoRun: true,
+  formsPerFrame: 20,
+  minFormSize: 5,
+  maxFormSize: 300,
+  clearCanvas: () => canvas.clear(),
+  
+};
 
 function preload() {
   console.log("preload started");
@@ -24,11 +33,20 @@ function setup() {
   background(255);
   img.resize(w, h);
   img.loadPixels();
+
+  gui = new lil.GUI();
+  gui.add(params, 'autoRun');
+  gui.add(params, 'formsPerFrame', 1, 50, 1);
+  gui.add(params, 'minFormSize', 1, 20, 1);
+  gui.add(params, 'maxFormSize', 20, 1000, 1);
+  gui.add(params, 'clearCanvas');
 }
 
 function draw() {
-  for (let i = 0; i < marksPerFrame; i++) {
-   addMark();
+  for (let i = 0; i < params.formsPerFrame; i++) {
+    if(params.autoRun) {
+        addMark();
+    }
   }
 }
 
@@ -41,14 +59,10 @@ function addMark() {
   let g = img.pixels[index + 1];
   let b = img.pixels[index + 2];
 
-  let t = frameCount * 0.0001;
-    let size = random(
-    lerp(40, 3, t),
-    lerp(300, 15, t)
-    );
+  let size = random(params.minFormSize, params.maxFormSize);
 
   // opacity inversely proportional to size
-  let alpha = map(size, 1, 150, 255, 1);
+  let alpha = map(size, params.minFormSize, params.maxFormSize, 150, 1);
 
   noStroke();
   fill(r, g, b, alpha);
